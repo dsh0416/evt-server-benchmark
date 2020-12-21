@@ -1,13 +1,12 @@
 require 'evt'
-# require_relative 'select_scheduler'
 
 puts "Using Backend: #{Evt::Scheduler.backend}"
-Thread.current.scheduler = Evt::Scheduler.new
+@scheduler = Evt::Scheduler.new
+Fiber.set_scheduler @scheduler
 
 @server = Socket.new Socket::AF_INET, Socket::SOCK_STREAM
 @server.bind Addrinfo.tcp '127.0.0.1', 3002
 @server.listen Socket::SOMAXCONN
-@scheduler = Thread.current.scheduler
 
 def handle_socket(socket)
   line = socket.gets
@@ -18,13 +17,13 @@ def handle_socket(socket)
   socket.close
 end
 
-Fiber.new(blocking: false) do
+Fiber.schedule do
   while true
     socket, addr = @server.accept
-    Fiber.new(blocking: false) do
+    Fiber.schedule do
       handle_socket(socket)
-    end.resume
+    end
   end
-end.resume
+end
 
 @scheduler.run

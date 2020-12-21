@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/dsh0416/evt.git
-  revision: 864a532126e1a7cb662f95bf84e57d1afaab4d08
+  revision: 9a70fe653ec101f13be69b89ccae8255127913c2
   specs:
-    evt (0.1.3)
+    evt (0.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -10,9 +10,10 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-darwin-20
 
 DEPENDENCIES
   evt!
 
 BUNDLED WITH
-   2.2.0.dev
+   2.2.2
