@@ -9,12 +9,13 @@ Fiber.set_scheduler @scheduler
 @server.listen Socket::SOMAXCONN
 
 def handle_socket(socket)
-  line = socket.gets
-  until line == "\r\n" || line.nil?
+  until socket.closed?
     line = socket.gets
+    until line == "\r\n" || line.nil?
+      line = socket.gets
+    end
+    socket.write("HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n")
   end
-  socket.write("HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n")
-  socket.close
 end
 
 Fiber.schedule do
